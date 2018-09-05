@@ -6,10 +6,10 @@ namespace AzureFunctionsRESTApi.Functions.Lookup
 {
     public static class ProcessStatus
     {
-        public static readonly string InProgress = "In Progress";
+        public static readonly string InProgress = "in-progress";
 
-        public static readonly string Succeeded = "Succeeded";
+        public static readonly string Succeeded = "succeeded";
 
-        public static readonly string Failed = "Failed";
+        public static readonly string Failed = "failed";
     }
 }

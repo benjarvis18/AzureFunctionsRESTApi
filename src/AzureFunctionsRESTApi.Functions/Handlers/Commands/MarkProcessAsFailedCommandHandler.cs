@@ -30,7 +30,7 @@ namespace AzureFunctionsRESTApi.Functions.Handlers.Commands
                 ErrorNumber = command.ErrorNumber,
                 ErrorMessage = command.ErrorMessage
             };
-            
+
             await _cosmosStore.UpdateAsync(process);
         }
     }

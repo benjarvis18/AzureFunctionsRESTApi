@@ -1,10 +1,14 @@
 ﻿using AzureFunctionsRESTApi.Functions.Commands;
+using AzureFunctionsRESTApi.Functions.CosmosDb;
 using AzureFunctionsRESTApi.Functions.Handlers.Commands;
+using AzureFunctionsRESTApi.Functions.Handlers.Queries;
 using AzureFunctionsRESTApi.Functions.Model;
+using AzureFunctionsRESTApi.Functions.Queries;
 using Cosmonaut;
 using Cosmonaut.Extensions;
 using FunctionMonkey.Abstractions;
 using FunctionMonkey.Abstractions.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,20 +29,12 @@ namespace AzureFunctionsRESTApi.Functions
                 };
             };
 
-            var cosmosSettings = new CosmosStoreSettings(
-                "Logging",
-                "https://localhost:8081",
-                "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
-            );
-
             builder
                 .Setup((serviceCollection, commandRegistry) =>
                 {
-                    serviceCollection.AddCosmosStore<Process>(cosmosSettings);
+                    serviceCollection.AddSingleton((_) => CosmosStoreFactory.GetCosmosStore<Process>());
 
-                    commandRegistry.Register<CreateProcessCommandHandler>();
-                    commandRegistry.Register<MarkProcessAsSuccessfulCommandHandler>();
-                    commandRegistry.Register<MarkProcessAsFailedCommandHandler>();
+                    commandRegistry.Discover(this.GetType().Assembly);
                 })
                 .OpenApiEndpoint(openApi => openApi
                     .Title("Functions REST API")
@@ -47,13 +43,13 @@ namespace AzureFunctionsRESTApi.Functions
                 )
                 .Functions(functions => functions
                     .HttpRoute("/api/v1/process", route => route
+                        .HttpFunction<GetProcessQuery>(HttpMethod.Get)
+                        .HttpFunction<GetProcessByIdQuery>("/{id}", HttpMethod.Get)
+
                         .HttpFunction<CreateProcessCommand>(HttpMethod.Post)
-                    )
-                    .HttpRoute("/api/v1/process/{id}/successful", route => route
-                        .HttpFunction<MarkProcessAsSuccessfulCommand>(HttpMethod.Put)
-                    )
-                    .HttpRoute("/api/v1/process/{id}/failed", route => route
-                        .HttpFunction<MarkProcessAsFailedCommand>(HttpMethod.Put)
+
+                        .HttpFunction<MarkProcessAsSuccessfulCommand>("/succeeded", HttpMethod.Put)
+                        .HttpFunction<MarkProcessAsFailedCommand>("/failed", HttpMethod.Put)
                     )
                 );
         }

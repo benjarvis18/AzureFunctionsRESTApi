@@ -18,8 +18,4 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\Queries\" />
-    <Folder Include="Queries\Response\" />
-  </ItemGroup>
 </Project>
