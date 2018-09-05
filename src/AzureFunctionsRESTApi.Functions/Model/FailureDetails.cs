@@ -8,7 +8,7 @@ namespace AzureFunctionsRESTApi.Functions.Model
     public class FailureDetails
     {
         [JsonProperty("errorNumber")]
-        public string ErrorNumber { get; set; }
+        public int ErrorNumber { get; set; }
 
         [JsonProperty("errorMessage")]
         public string ErrorMessage { get; set; }

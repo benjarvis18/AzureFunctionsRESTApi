@@ -37,6 +37,8 @@ namespace AzureFunctionsRESTApi.Functions
                     serviceCollection.AddCosmosStore<Process>(cosmosSettings);
 
                     commandRegistry.Register<CreateProcessCommandHandler>();
+                    commandRegistry.Register<MarkProcessAsSuccessfulCommandHandler>();
+                    commandRegistry.Register<MarkProcessAsFailedCommandHandler>();
                 })
                 .OpenApiEndpoint(openApi => openApi
                     .Title("Functions REST API")
@@ -46,6 +48,12 @@ namespace AzureFunctionsRESTApi.Functions
                 .Functions(functions => functions
                     .HttpRoute("/api/v1/process", route => route
                         .HttpFunction<CreateProcessCommand>(HttpMethod.Post)
+                    )
+                    .HttpRoute("/api/v1/process/{id}/successful", route => route
+                        .HttpFunction<MarkProcessAsSuccessfulCommand>(HttpMethod.Put)
+                    )
+                    .HttpRoute("/api/v1/process/{id}/failed", route => route
+                        .HttpFunction<MarkProcessAsFailedCommand>(HttpMethod.Put)
                     )
                 );
         }

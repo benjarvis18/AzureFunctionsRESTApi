@@ -20,7 +20,7 @@ namespace AzureFunctionsRESTApi.Functions.Model
         public string Status { get; set; }
 
         [JsonProperty("failureDetails")]
-        public string FailureDetails { get; set; }
+        public FailureDetails FailureDetails { get; set; }
 
         [JsonProperty("startDateTime")]
         public DateTime StartDateTime { get; set; }

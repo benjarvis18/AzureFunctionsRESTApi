@@ -23,7 +23,7 @@ namespace AzureFunctionsRESTApi.Functions.Handlers.Commands
         {
             var process = new Process()
             {
-                Id = command.ProcessId,
+                Id = command.Id,
                 ProcessName = command.ProcessName,
                 InitiatingResourceName = command.InitiatingResourceName,
                 StartDateTime = command.StartDateTime,

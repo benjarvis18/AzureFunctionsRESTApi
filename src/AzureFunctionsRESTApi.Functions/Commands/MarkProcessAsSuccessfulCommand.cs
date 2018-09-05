@@ -5,14 +5,10 @@ using System.Text;
 
 namespace AzureFunctionsRESTApi.Functions.Commands
 {
-    public class CreateProcessCommand : ICommand
+    public class MarkProcessAsSuccessfulCommand : ICommand
     {
         public string Id { get; set; }
 
-        public string InitiatingResourceName { get; set; }
-
-        public string ProcessName { get; set; }
-
-        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
     }
 }
